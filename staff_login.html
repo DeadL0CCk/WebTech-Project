@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CSC 3215 Web Technologies - Staff Login">
+    <meta name="author" content="Sabit Hassan">
+    <meta name="keywords" content="HTML, CSS, JavaScript, AIUB, Staff Login">
+    <title>Staff Login - Restaurant Management System</title>
+    <link rel="stylesheet" href="style.css?v=2">
+</head>
+<body>
+
+    <main class="login-wrapper">
+        <h1 class="page-title">Staff Login</h1>
+        <p id="loginMsg" class="msg"></p>
+
+        <form action="staff_customers.html" method="get">
+            <fieldset>
+                <legend>Staff Authentication &amp; Shift</legend>
+                <table class="form-table">
+                    <tr>
+                        <td colspan="2">
+                            <label class="form-label" for="staff_id">Staff ID / Email <span class="required">*</span></label>
+                            <input type="text" id="staff_id" name="staff_id" class="form-control" placeholder="STF-101 or staff@aiub.edu" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <label class="form-label" for="password">Password <span class="required">*</span></label>
+                            <input type="password" id="password" name="password" class="form-control" placeholder="Enter Password (min 6 chars)" minlength="6" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <label class="form-label" for="outlet">Outlet / Branch <span class="required">*</span></label>
+                            <select id="outlet" name="outlet" class="form-control" required>
+                                <option value="">select</option>
+                                <option value="Gulshan">Gulshan</option>
+                                <option value="Dhanmondi">Dhanmondi</option>
+                                <option value="Bailey Road">Bailey Road</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <label class="form-label" for="shift">Shift <span class="required">*</span></label>
+                            <select id="shift" name="shift" class="form-control" required>
+                                <option value="">select</option>
+                                <option value="Morning">Morning</option>
+                                <option value="Evening">Evening</option>
+                                <option value="Night">Night</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+
+            <table class="button-table">
+                <tr>
+                    <td><button type="submit" class="btn">Login</button></td>
+                    <td><button type="reset" class="btn">Reset</button></td>
+                </tr>
+            </table>
+        </form>
+    </main>
+
+</body>
+</html>

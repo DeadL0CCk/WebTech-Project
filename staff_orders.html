@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CSC 3215 Web Technologies - Restaurant Management System Staff Panel">
+    <meta name="author" content="Sabit Hassan">
+    <meta name="keywords" content="HTML, CSS, JavaScript, DOM, AIUB, Web Technologies">
+    <title>Customer Order Creation - Staff Panel</title>
+    <link rel="stylesheet" href="style.css?v=2">
+</head>
+<body>
+
+    <table class="main-layout">
+        <tr>
+            <td class="sidebar">
+                <header class="sidebar-title">Staff Panel</header>
+                <nav>
+                    <ul class="sidebar-menu">
+                        <li><a href="staff_customers.html">Customer &amp; Outlet Info</a></li>
+                        <li class="active"><a href="staff_orders.html">Create Order (Cart)</a></li>
+                        <li><a href="staff_bill_summary.html">Final Invoice &amp; Slip</a></li>
+                        <li><a href="staff_order_status.html">Order &amp; Pickup Status</a></li>
+                        <li><a href="staff_login.html">Logout</a></li>
+                    </ul>
+                </nav>
+            </td>
+
+            <td class="content-area">
+                <main>
+                    <h1 class="page-title">Customer Order Creation (Indicative Cart)</h1>
+                    <p id="orderMsg" class="msg"></p>
+
+                    <form action="#" method="post">
+                        <fieldset>
+                            <legend>Order &amp; Item Selection</legend>
+                            <table class="form-table">
+                                <tr>
+                                    <td>
+                                        <label class="form-label" for="order_id">Order ID</label>
+                                        <input type="text" id="order_id" name="order_id" class="form-control" value="Auto Generate" disabled>
+                                    </td>
+                                    <td>
+                                        <label class="form-label" for="outlet">Outlet / Location <span class="required">*</span></label>
+                                        <select id="outlet" name="outlet" class="form-control" required>
+                                            <option value="Gulshan">Gulshan</option>
+                                            <option value="Dhanmondi">Dhanmondi</option>
+                                            <option value="Bailey Road">Bailey Road</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="form-label" for="customer_id">Customer <span class="required">*</span></label>
+                                        <select id="customer_id" name="customer_id" class="form-control" required>
+                                            <option value="">select</option>
+                                            <option value="CUST-101">CUST-101 - Rahim Uddin (Delivery)</option>
+                                            <option value="CUST-102">CUST-102 - Nusrat Jahan (Pre-order / Pickup)</option>
+                                            <option value="CUST-103">CUST-103 - Tanvir Ahmed (Dine-in Reservation)</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <label class="form-label" for="payment_option">Payment Option <span class="required">*</span></label>
+                                        <select id="payment_option" name="payment_option" class="form-control" required>
+                                            <option value="Cash on Delivery">Cash on Delivery (COD)</option>
+                                            <option value="bKash (External Gateway)">bKash (External Gateway)</option>
+                                            <option value="Visa / MasterCard (External Gateway)">Visa / MasterCard (External Gateway)</option>
+                                            <option value="No Payment (Dine-in Reservation)">No Payment (Dine-in Reservation)</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="form-label" for="food_item">Food Item (Prices Excl. Tax) <span class="required">*</span></label>
+                                        <select id="food_item" name="food_item" class="form-control" onchange="syncUnitPrice()">
+                                            <option value="" data-price="0">select</option>
+                                            <option value="Kacchi Biryani (Half)" data-price="320">Kacchi Biryani (Half) - 320.00</option>
+                                            <option value="Chicken Roast Pulao" data-price="280">Chicken Roast Pulao - 280.00</option>
+                                            <option value="Borhani (Glass)" data-price="90">Borhani (Glass) - 90.00</option>
+                                            <option value="Firni Cup" data-price="100">Firni Cup - 100.00</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <label class="form-label" for="unit_price">Unit Price (Excl. Tax)</label>
+                                        <input type="text" id="unit_price" name="unit_price" class="form-control" value="0.00" readonly>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="form-label" for="quantity">Quantity <span class="required">*</span></label>
+                                        <input type="number" id="quantity" name="quantity" class="form-control" min="1" max="100" value="1" onchange="updateLineSubtotal()" onkeyup="updateLineSubtotal()">
+                                    </td>
+                                    <td>
+                                        <label class="form-label" for="subtotal">Line Subtotal</label>
+                                        <input type="text" id="subtotal" name="subtotal" class="form-control" value="0.00" readonly>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <label class="form-label" for="special_note">Special Note</label>
+                                        <input type="text" id="special_note" name="special_note" class="form-control" placeholder="e.g. Extra salad, less oil">
+                                    </td>
+                                </tr>
+                            </table>
+                        </fieldset>
+
+                        <table class="button-table">
+                            <tr>
+                                <td><button type="button" class="btn">Add Item</button></td>
+                                <td><button type="button" class="btn">Remove Last</button></td>
+                                <td><button type="submit" class="btn">Place Order</button></td>
+                                <td><button type="reset" class="btn">Clear</button></td>
+                            </tr>
+                        </table>
+                    </form>
+
+                    <section>
+                        <h2 id="cartTotalText" class="list-section-title">Current Order Items (2 items | Indicative Total: 820.00 BDT)</h2>
+
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Food Item</th>
+                                    <th>Unit Price</th>
+                                    <th>Quantity</th>
+                                    <th>Special Note</th>
+                                    <th>Indicative Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cartTableBody">
+                                <tr>
+                                    <td>Kacchi Biryani (Half)</td>
+                                    <td>320.00</td>
+                                    <td>2</td>
+                                    <td>Extra salad</td>
+                                    <td>640.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Borhani (Glass)</td>
+                                    <td>90.00</td>
+                                    <td>2</td>
+                                    <td>Chilled</td>
+                                    <td>180.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </main>
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CSC 3215 Web Technologies - Restaurant Management System Staff Panel">
+    <meta name="author" content="Sabit Hassan">
+    <meta name="keywords" content="HTML, CSS, JavaScript, DOM, AIUB, Web Technologies">
+    <title>Final Invoice & Slip - Staff Panel</title>
+    <link rel="stylesheet" href="style.css?v=2">
+</head>
+<body>
+
+    <table class="main-layout">
+        <tr>
+            <td class="sidebar">
+                <header class="sidebar-title">Staff Panel</header>
+                <nav>
+                    <ul class="sidebar-menu">
+                        <li><a href="staff_customers.html">Customer &amp; Outlet Info</a></li>
+                        <li><a href="staff_orders.html">Create Order (Cart)</a></li>
+                        <li class="active"><a href="staff_bill_summary.html">Final Invoice &amp; Slip</a></li>
+                        <li><a href="staff_order_status.html">Order &amp; Pickup Status</a></li>
+                        <li><a href="staff_login.html">Logout</a></li>
+                    </ul>
+                </nav>
+            </td>
+
+            <td class="content-area">
+                <main>
+                    <h1 class="page-title">Final Invoice &amp; Order Slip (No Internal Transaction)</h1>
+                    <p id="billMsg" class="msg"></p>
+
+                    <form id="billForm" action="#" method="post">
+                        <fieldset>
+                            <legend>Invoice Calculation &amp; Settlement Status</legend>
+                            <table class="form-table">
+                                <tr>
+                                    <td>
+                                        <label class="form-label" for="slip_id">Final Invoice / Slip ID</label>
+                                        <input type="text" id="slip_id" name="slip_id" class="form-control" value="INV-501" readonly>
+                                    </td>
+                                    <td>
+                                        <label class="form-label" for="order_id">Order ID <span class="required">*</span></label>
+                                        <select id="order_id" name="order_id" class="form-control" onchange="updateInvoicePreview()">
+                                            <option value="ORD-501" selected>ORD-501 - Rahim Uddin (Gulshan - Delivery)</option>
+                                            <option value="ORD-502">ORD-502 - Nusrat Jahan (Dhanmondi - Pickup)</option>
+                                            <option value="ORD-503">ORD-503 - Tanvir Ahmed (Bailey Road - Dine-in)</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="form-label" for="order_option">Order Option <span class="required">*</span></label>
+                                        <select id="order_option" name="order_option" class="form-control" onchange="updateInvoicePreview()">
+                                            <option value="Delivery" selected>Delivery</option>
+                                            <option value="Pre-order / Pickup">Pre-order / Pickup</option>
+                                            <option value="Dine-in Reservation">Dine-in Reservation</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <label class="form-label" for="payment_option">Payment Option (No Card Details Stored) <span class="required">*</span></label>
+                                        <select id="payment_option" name="payment_option" class="form-control" onchange="updateInvoicePreview()">
+                                            <option value="Cash on Delivery" selected>Cash on Delivery (COD)</option>
+                                            <option value="bKash (External Gateway)">bKash (External Gateway)</option>
+                                            <option value="Visa / MasterCard (External Gateway)">Visa / MasterCard (External Gateway)</option>
+                                            <option value="Pay at Outlet (Dine-in)">Pay at Outlet (Dine-in)</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="form-label" for="settlement_status">Gateway / Settlement Status <span class="required">*</span></label>
+                                        <select id="settlement_status" name="settlement_status" class="form-control" onchange="updateInvoicePreview()">
+                                            <option value="Pending (COD / Pay at Outlet)" selected>Pending (COD / Pay at Outlet)</option>
+                                            <option value="Pre-paid via External Gateway">Pre-paid via External Gateway</option>
+                                            <option value="Settled on Delivery / Pickup">Settled on Delivery / Pickup</option>
+                                            <option value="Refund Initiated (7-10 Working Days)">Refund Initiated (7-10 Working Days)</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <label class="form-label" for="discount">Discount (%)</label>
+                                        <input type="number" id="discount" name="discount" class="form-control" min="0" max="100" value="0" onchange="calculateInvoice()">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="form-label" for="subtotal">Subtotal (Excl. Tax)</label>
+                                        <input type="number" id="subtotal" name="subtotal" class="form-control" value="820.00" step="0.01" onchange="calculateInvoice()">
+                                    </td>
+                                    <td>
+                                        <label class="form-label" for="vat">Applicable Tax / VAT (5%)</label>
+                                        <input type="text" id="vat" name="vat" class="form-control" value="41.00" readonly>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="form-label" for="total_amount">Final Binding Invoice Total</label>
+                                        <input type="text" id="total_amount" name="total_amount" class="form-control" value="861.00" readonly>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </fieldset>
+
+                        <table class="button-table">
+                            <tr>
+                                <td><button type="button" class="btn">Calculate Invoice</button></td>
+                                <td><button type="button" class="btn">Mark Settled</button></td>
+                                <td><button type="button" class="btn">Generate Invoice</button></td>
+                                <td><button type="button" class="btn" disabled>Print Invoice</button></td>
+                            </tr>
+                        </table>
+                    </form>
+
+                    <section class="slip-box">
+                        <div class="slip-header">Final Binding Order Invoice (Non-Transactional Record)</div>
+                        <p>
+                            <strong>Invoice ID:</strong> <span id="p_slip">INV-501</span> &nbsp;|&nbsp;
+                            <strong>Order ID:</strong> <span id="p_order">ORD-501</span> &nbsp;|&nbsp;
+                            <strong>Option:</strong> <span id="p_opt">Delivery</span>
+                        </p>
+                        <p class="slip-line">
+                            <strong>Payment Option:</strong> <span id="p_pay">Cash on Delivery</span> &nbsp;|&nbsp;
+                            <strong>Status:</strong> <span id="p_status">Pending (COD / Pay at Outlet)</span>
+                        </p>
+                        <p class="slip-line">
+                            <strong>Subtotal:</strong> <span id="p_sub">820.00</span> &nbsp;|&nbsp;
+                            <strong>Discount:</strong> <span id="p_disc">0%</span> &nbsp;|&nbsp;
+                            <strong>Tax/VAT (5%):</strong> <span id="p_vat">41.00</span> &nbsp;|&nbsp;
+                            <strong>Final Total:</strong> <span id="p_total">861.00</span>
+                        </p>
+                    </section>
+
+                    <section class="no-print">
+                        <h2 class="list-section-title">Issued Final Invoices</h2>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Invoice ID</th>
+                                    <th>Order ID</th>
+                                    <th>Option</th>
+                                    <th>Payment Option</th>
+                                    <th>Final Total</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>INV-501</td>
+                                    <td>ORD-501</td>
+                                    <td>Delivery</td>
+                                    <td>Cash on Delivery</td>
+                                    <td>861.00</td>
+                                    <td>Pending (COD / Pay at Outlet)</td>
+                                </tr>
+                                <tr>
+                                    <td>INV-502</td>
+                                    <td>ORD-502</td>
+                                    <td>Pre-order / Pickup</td>
+                                    <td>bKash (External Gateway)</td>
+                                    <td>420.00</td>
+                                    <td>Pre-paid via External Gateway</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </main>
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>

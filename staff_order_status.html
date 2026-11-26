@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CSC 3215 Web Technologies - Restaurant Management System Staff Panel">
+    <meta name="author" content="Sabit Hassan">
+    <meta name="keywords" content="HTML, CSS, JavaScript, DOM, AIUB, Web Technologies">
+    <title>Order & Pickup Status - Staff Panel</title>
+    <link rel="stylesheet" href="style.css?v=2">
+</head>
+<body>
+
+    <table class="main-layout">
+        <tr>
+            <td class="sidebar">
+                <header class="sidebar-title">Staff Panel</header>
+                <nav>
+                    <ul class="sidebar-menu">
+                        <li><a href="staff_customers.html">Customer &amp; Outlet Info</a></li>
+                        <li><a href="staff_orders.html">Create Order (Cart)</a></li>
+                        <li><a href="staff_bill_summary.html">Final Invoice &amp; Slip</a></li>
+                        <li class="active"><a href="staff_order_status.html">Order &amp; Pickup Status</a></li>
+                        <li><a href="staff_login.html">Logout</a></li>
+                    </ul>
+                </nav>
+            </td>
+
+            <td class="content-area">
+                <main>
+                    <h1 class="page-title">Order Confirmation, Pickup Notification &amp; Status Updates</h1>
+                    <p id="statusMsg" class="msg"></p>
+
+                    <form action="#" method="post">
+                        <fieldset>
+                            <legend>Order Status &amp; Customer Notification</legend>
+                            <table class="form-table">
+                                <tr>
+                                    <td>
+                                        <label class="form-label" for="order_id">Order ID <span class="required">*</span></label>
+                                        <input type="text" id="order_id" name="order_id" class="form-control" placeholder="e.g. ORD-501" required>
+                                    </td>
+                                    <td>
+                                        <label class="form-label" for="outlet">Outlet / Location</label>
+                                        <input type="text" id="outlet" name="outlet" class="form-control" value="Gulshan" readonly>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="form-label" for="order_option">Order Option</label>
+                                        <input type="text" id="order_option" name="order_option" class="form-control" value="Delivery" readonly>
+                                    </td>
+                                    <td>
+                                        <label class="form-label" for="current_status">Current Order Status</label>
+                                        <input type="text" id="current_status" name="current_status" class="form-control" value="Confirmed (Locked)" readonly>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="form-label" for="new_status">New Order Status <span class="required">*</span></label>
+                                        <select id="new_status" name="new_status" class="form-control" required>
+                                            <option value="">select</option>
+                                            <option value="Pending Confirmation">Pending Confirmation</option>
+                                            <option value="Confirmed (Locked)">Confirmed (Locked - No Edit)</option>
+                                            <option value="Preparing">Preparing</option>
+                                            <option value="Ready for Pickup / Dispatch">Ready for Pickup / Dispatch</option>
+                                            <option value="Completed">Completed</option>
+                                            <option value="Cancelled (Refund 7-10 Days)">Cancelled (Item Unavailable - Refund 7-10 Days)</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <label class="form-label" for="updated_at">Last Updated Date &amp; Time</label>
+                                        <input type="text" id="updated_at" name="updated_at" class="form-control" value="Auto Timestamp" disabled>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <label class="form-label" for="staff_note">Customer Notification / Staff Note</label>
+                                        <input type="text" id="staff_note" name="staff_note" class="form-control" placeholder="e.g. Ready for collection at Dhanmondi outlet">
+                                    </td>
+                                </tr>
+                            </table>
+                        </fieldset>
+
+                        <table class="button-table">
+                            <tr>
+                                <td><button type="submit" class="btn">Update Status</button></td>
+                                <td><button type="reset" class="btn">Clear</button></td>
+                            </tr>
+                        </table>
+                    </form>
+
+                    <section>
+                        <h2 class="list-section-title">Branch Order Queue</h2>
+
+                        <table class="search-table">
+                            <tr>
+                                <td class="search-col-input">
+                                    <label class="form-label" for="search_order">Search Order</label>
+                                    <input type="text" id="search_order" name="search_order" class="form-control" placeholder="Search by Order ID, customer name, or outlet">
+                                </td>
+                                <td class="search-col-btn">
+                                    <button type="button" class="search-btn">Search Order</button>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Outlet</th>
+                                    <th>Option</th>
+                                    <th>Order Status</th>
+                                    <th>Notification / Staff Note</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ORD-501</td>
+                                    <td>Rahim Uddin</td>
+                                    <td>Gulshan</td>
+                                    <td>Delivery</td>
+                                    <td>Confirmed (Locked)</td>
+                                    <td>Preparing in kitchen</td>
+                                </tr>
+                                <tr>
+                                    <td>ORD-502</td>
+                                    <td>Nusrat Jahan</td>
+                                    <td>Dhanmondi</td>
+                                    <td>Pre-order / Pickup</td>
+                                    <td>Ready for Pickup / Dispatch</td>
+                                    <td>Pickup notification sent to customer</td>
+                                </tr>
+                                <tr>
+                                    <td>ORD-503</td>
+                                    <td>Tanvir Ahmed</td>
+                                    <td>Bailey Road</td>
+                                    <td>Dine-in Reservation</td>
+                                    <td>Confirmed (Locked)</td>
+                                    <td>Table 05 reserved (no payment collected)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </main>
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>
